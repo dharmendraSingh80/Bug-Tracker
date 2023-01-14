@@ -1,0 +1,14 @@
+<div class="project-container d-flex flex-wrap justify-content-around">
+  <div class=" card border-secondary p-3 mt-5 " style="height: 30%; background-color: lightblue;">
+    <h3 class="display-6 p-2 mb-2 bg-secondary text-white">
+      Project : <%= project.name %>
+    </h3>
+    <h4 class="display-8 p-3 mb-2 bg-light text-dark">
+      Author : <%= project.author %>
+    </h4>
+    <h5 class="display-8 p-3  bg-light text-dark">
+      Description : <%= project.description %>
+    </h5>
+  </div>
+  <%- include('./partials/_issues'); %>
+</div>

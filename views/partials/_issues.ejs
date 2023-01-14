@@ -1,0 +1,165 @@
+<!-- this partial contains two buttons ..
+1- to show all the issues.
+2- to search/ filter issues -->
+<% if(project.issues.length>= 1) { %>
+  <div>
+    <div class="w-50 my-5 d-flex justify-content-around mx-auto">
+      <div>
+
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" style="
+        --bs-btn-padding-y: 0.25rem;
+        --bs-btn-padding-x: 0.5rem;
+        --bs-btn-font-size: 1rem;
+      " data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+          Filter Issues
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" tabindex="-1" aria-labelledby="staticBackdropLabel"
+          aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content" style="background-color: lightyellow;">
+              <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Filter Issues</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+
+              <form class="border border-light border-3" action="/" method="get" id="filter-issue-form">
+                <div class="row mb-3 m-auto">
+                  <label for="labels" class="col-sm-4 col-form-label">Search by Label</label>
+
+                  <div class="col-sm-8">
+                    <% for( let label of project.labels) { %>
+                      <input class="form-check-input" name="labels" type="checkbox" value="<%= label %>"
+                        id="<%=label%>" />
+                      <label class="form-check-label" for="<%=label%>">
+                        <%=label%>
+                      </label><br />
+                      <% } %>
+                  </div>
+                </div>
+                <div class="row mb-3 m-auto">
+                  <label for="authorlabel" class="col-sm-4 col-form-label">Author</label>
+                  <div class="col-sm-8">
+                    <input class="form-check-input" name="author" type="radio" checked="checked" value="" id="null" />
+                    <label class="form-check-label" for="null">None</label><br />
+                    <% for( let issue of project.issues ) { %>
+                      <input class="form-check-input" name="author" type="radio" value="<%= issue.author %>"
+                        id="<%= issue.author %>" />
+                      <label class="form-check-label" for="<%= issue.author %>">
+                        <%= issue.author %>
+                      </label><br />
+                      <% } %>
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Close
+                  </button>
+                  <button type="submit" data-bs-dismiss="modal" class="btn btn-primary">
+                    See Issues
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" style="
+        --bs-btn-padding-y: 0.25rem;
+        --bs-btn-padding-x: 0.5rem;
+        --bs-btn-font-size: 1rem;
+      " data-bs-toggle="modal" data-bs-target="#searchmodal">
+          Search Issues
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="searchmodal" tabindex="-1" aria-labelledby="searchmodalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content" style="background-color: lightyellow;">
+              <div class="modal-header">
+                <h5 class="modal-title" id="searchmodalLabel">Search Issues</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <form class="border border-light border-3" action="/" method="get" id="search-issue-form">
+                <div class="row mb-3 m-auto">
+                  <label for="titlelabel" class="col-sm-4 col-form-label">Title</label>
+                  <div class="col-sm-8">
+                    <input type="text" name="tie" placeholder="Search by title.." class="form-control"
+                      id="titlelabel" />
+                  </div>
+                </div>
+                <div class="row mb-3 m-auto">
+                  <label for="desclabel" class="col-sm-4 col-form-label">Description</label>
+                  <div class="col-sm-8">
+                    <input type="text" name="des" placeholder="Search by description..." class="form-control"
+                      id="authorlabel" />
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Close
+                  </button>
+                  <button type="submit" data-bs-dismiss="modal" class="btn btn-primary">
+                    See Issues
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- card for differnet Issues -->
+    <div class="card p-3" id="issues-container" style="width: 40rem;background-color: lightblue;">
+      <div class="modal-body">
+        <% for(let issue of project.issues){ %>
+          <div id="all-issues" class="card w-100 mb-1 <%=issue.open==false ? " text-bg-danger" : "text-bg-success" %>"
+            style="width:
+            18rem">
+            <div class="card-body">
+              <span class="d-flex justify-content-between">
+                <h4 class="card-title">Title : <%= issue.title %>
+                    <%=issue.open==false ? "( Open )" : "( Closed )" %>
+                </h4>
+                <a style="text-decoration: none; color:white" href="/project/delete/<%= issue._id %>">X</a>
+              </span>
+
+              <h5 class="card-title">Author : <%= issue.author %>
+              </h5>
+              <h6 class="card-subtitle mb-2 ">
+                Description : <%= issue.description %>
+              </h6>
+              <h6>
+                Labels : <%= issue.labels %>
+              </h6>
+
+              <div id="closeDiv" class="btn d-inline-block p-1 text-bg-secondary">
+                <a data="<%=JSON.stringify(issue)%>" href="/project/closeIssue/<%= issue._id %>"
+                  style="text-decoration: none; color:white" class="closeIssue">close?</a>
+              </div>
+            </div>
+          </div>
+          <% } %>
+      </div>
+    </div>
+    <div id="issue-data" data="<%=JSON.stringify(project.issues)%>"></div>
+  </div>
+  <% } %>
+
+
+    <script src="/js/filterIssues.js"></script>
+    <script src="/js/searchIssues.js"></script>
+    <script src="/js/closed.js"></script>
+    <script>
+      $('.closeIssue').each(function () {
+        let self = this;
+        let toggleClose = new ToggleClose(self);
+      });
+    </script>

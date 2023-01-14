@@ -12,6 +12,6 @@ A Nodejs + EJS + MongoDB + Express application to track issues/bugs for a projec
 
 -User can track the issue by name or description.
 
--User close or open the issues
+-User can close or open the issues
 
 -Used Bootstrap for neat UI.
